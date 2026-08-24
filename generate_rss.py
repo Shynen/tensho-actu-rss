@@ -13,7 +13,7 @@ FEEDS = {
         "title": "Actualités",
     },
     "finance": {
-        "url": "https://services.lesechos.fr/rss/les-echos-finance-marches.xml",
+        "url": "https://fr.investing.com/rss/286.rss",
         "title": "Finance",
     },
     "sport": {
