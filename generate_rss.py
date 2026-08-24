@@ -11,22 +11,28 @@ FEEDS = {
     "actualites": {
         "url": "https://www.lemonde.fr/rss/une.xml",
         "title": "Actualités",
+        "sort_by_date": True,
     },
     "finance": {
         "url": "https://fr.investing.com/rss/286.rss",
         "title": "Finance",
+        "sort_by_date": False,
     },
     "sport": {
         "url": "https://www.lemonde.fr/sport/rss_full.xml",
         "title": "Sport",
+        "sort_by_date": True,
     },
     "crypto": {
         "url": "https://fr.investing.com/rss/302.rss",
         "title": "Crypto",
+        "sort_by_date": False,
     },
 }
 
+
 MAX_ITEMS = 10
+
 
 HEADERS = {
     "User-Agent": (
@@ -41,21 +47,25 @@ HEADERS = {
     "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
     "Cache-Control": "no-cache",
     "Pragma": "no-cache",
-    "Referer": "https://www.lesechos.fr/",
-    "Connection": "keep-alive",
 }
 
 
 def get_entry_date(entry):
-    parsed = entry.get("published_parsed") or entry.get("updated_parsed")
+    parsed = (
+        entry.get("published_parsed")
+        or entry.get("updated_parsed")
+    )
 
-    if parsed:
-        try:
-            return datetime(*parsed[:6], tzinfo=timezone.utc)
-        except Exception:
-            pass
+    if not parsed:
+        return None
 
-    return datetime.now(timezone.utc)
+    try:
+        return datetime(
+            *parsed[:6],
+            tzinfo=timezone.utc
+        )
+    except Exception:
+        return None
 
 
 def clean_text(value):
@@ -77,44 +87,16 @@ def get_description(entry):
 def fetch_feed(url):
     print("   🌐 Requête HTTP...")
 
-    try:
-        response = requests.get(
-            url,
-            headers=HEADERS,
-            timeout=30,
-            allow_redirects=True,
-        )
-
-        print(f"   📡 HTTP {response.status_code}")
-
-        if response.status_code == 200:
-            feed = feedparser.parse(response.content)
-
-            if feed.entries:
-                return feed
-
-        print("   ⚠️ Accès direct refusé ou flux invalide.")
-        print("   🔄 Tentative via Jina Reader...")
-
-    except Exception as error:
-        print(f"   ⚠️ Accès direct échoué : {error}")
-        print("   🔄 Tentative via Jina Reader...")
-
-    jina_url = f"https://r.jina.ai/{url}"
-
-    jina_headers = {
-        "Accept": "text/html",
-        "User-Agent": "Mozilla/5.0",
-        "X-Respond-With": "html",
-    }
-
     response = requests.get(
-        jina_url,
-        headers=jina_headers,
-        timeout=60,
+        url,
+        headers=HEADERS,
+        timeout=30,
+        allow_redirects=True,
     )
 
-    print(f"   📡 Jina HTTP {response.status_code}")
+    print(f"   📡 HTTP {response.status_code}")
+    print(f"   📍 URL finale : {response.url}")
+    print(f"   📦 Taille : {len(response.content)} octets")
 
     response.raise_for_status()
 
@@ -122,10 +104,50 @@ def fetch_feed(url):
 
     if not feed.entries:
         raise RuntimeError(
-            "Jina a récupéré la source mais aucun article RSS n'a été détecté."
+            "Le flux RSS ne contient aucun article."
         )
 
     return feed
+
+
+def prepare_entries(feed, config):
+    entries = list(feed.entries)
+
+    if config["sort_by_date"]:
+        dated_entries = []
+        undated_entries = []
+
+        for entry in entries:
+            date = get_entry_date(entry)
+
+            if date is None:
+                undated_entries.append(entry)
+            else:
+                dated_entries.append(
+                    (date, entry)
+                )
+
+        dated_entries.sort(
+            key=lambda item: item[0],
+            reverse=True
+        )
+
+        entries = (
+            [entry for _, entry in dated_entries]
+            + undated_entries
+        )
+
+        print(
+            "   📅 Tri chronologique effectué."
+        )
+
+    else:
+        print(
+            "   📋 Ordre source conservé "
+            "(date RSS non fiable)."
+        )
+
+    return entries
 
 
 def create_feed(category, config, entries):
@@ -134,7 +156,10 @@ def create_feed(category, config, entries):
         {"version": "2.0"}
     )
 
-    channel = ET.SubElement(rss, "channel")
+    channel = ET.SubElement(
+        rss,
+        "channel"
+    )
 
     ET.SubElement(
         channel,
@@ -152,10 +177,16 @@ def create_feed(category, config, entries):
     ).text = f"Flux RSS {config['title']} - Tensho"
 
     for entry in entries[:MAX_ITEMS]:
-        item = ET.SubElement(channel, "item")
+        item = ET.SubElement(
+            channel,
+            "item"
+        )
 
         title = clean_text(
-            entry.get("title", "Sans titre")
+            entry.get(
+                "title",
+                "Sans titre"
+            )
         )
 
         link = entry.get(
@@ -169,8 +200,13 @@ def create_feed(category, config, entries):
             or link
         )
 
-        description = get_description(entry)
-        pub_date = get_entry_date(entry)
+        description = get_description(
+            entry
+        )
+
+        pub_date = get_entry_date(
+            entry
+        )
 
         ET.SubElement(
             item,
@@ -185,7 +221,9 @@ def create_feed(category, config, entries):
         guid_element = ET.SubElement(
             item,
             "guid",
-            {"isPermaLink": "false"}
+            {
+                "isPermaLink": "false"
+            }
         )
 
         guid_element.text = guid
@@ -195,16 +233,26 @@ def create_feed(category, config, entries):
             "description"
         ).text = description
 
-        ET.SubElement(
-            item,
-            "pubDate"
-        ).text = format_datetime(pub_date)
+        # On conserve la date fournie par la source.
+        # On n'invente jamais une date avec datetime.now().
+        if pub_date is not None:
+            ET.SubElement(
+                item,
+                "pubDate"
+            ).text = format_datetime(
+                pub_date
+            )
 
     tree = ET.ElementTree(rss)
 
-    ET.indent(tree, space=" ")
+    ET.indent(
+        tree,
+        space=" "
+    )
 
-    output = Path(f"{category}.xml")
+    output = Path(
+        f"{category}.xml"
+    )
 
     tree.write(
         output,
@@ -212,34 +260,49 @@ def create_feed(category, config, entries):
         xml_declaration=True
     )
 
-    print(f"   🟢 {output} généré.")
+    print(
+        f"   🟢 {output} généré."
+    )
 
 
 def main():
-    print("========================================")
-    print("Tensho Actualités RSS")
-    print("========================================")
+    print(
+        "========================================"
+    )
+    print(
+        "Tensho Actualités RSS"
+    )
+    print(
+        "========================================"
+    )
 
     successful = 0
     failed = 0
 
     for category, config in FEEDS.items():
         print()
-        print(f"🔎 Récupération : {config['title']}")
-        print(f"   {config['url']}")
+        print(
+            f"🔎 Récupération : "
+            f"{config['title']}"
+        )
+
+        print(
+            f"   {config['url']}"
+        )
 
         try:
-            feed = fetch_feed(config["url"])
+            feed = fetch_feed(
+                config["url"]
+            )
 
-            entries = list(feed.entries)
-
-            entries.sort(
-                key=get_entry_date,
-                reverse=True
+            entries = prepare_entries(
+                feed,
+                config
             )
 
             print(
-                f"   📰 {len(entries)} articles récupérés."
+                f"   📰 {len(entries)} "
+                f"articles récupérés."
             )
 
             create_feed(
@@ -251,16 +314,26 @@ def main():
             successful += 1
 
         except Exception as error:
-            print(f"   ❌ Échec : {error}")
+            print(
+                f"   ❌ Échec : {error}"
+            )
+
             failed += 1
 
     print()
-    print("========================================")
+    print(
+        "========================================"
+    )
+
     print(
         f"RSS TERMINÉ — "
-        f"{successful} OK / {failed} échec(s)"
+        f"{successful} OK / "
+        f"{failed} échec(s)"
     )
-    print("========================================")
+
+    print(
+        "========================================"
+    )
 
 
 if __name__ == "__main__":
