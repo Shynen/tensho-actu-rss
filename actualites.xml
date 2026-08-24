@@ -1,9 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <rss version="2.0">
  <channel>
-  <title>Actualités - Le Monde</title>
+  <title>Actualités - Actualités</title>
   <link>https://www.lemonde.fr/rss/une.xml</link>
   <description>Flux RSS Actualités - Tensho</description>
+  <item>
+   <title>Présidentielle 2027 : L’Après saisit la main tendue de l’écologiste Marine Tondelier pour une union de la gauche</title>
+   <link>https://www.lemonde.fr/politique/article/2026/08/24/presidentielle-2027-l-apres-saisit-la-main-tendue-de-l-ecologiste-marine-tondelier-pour-une-union-de-la-gauche_6755585_823448.html</link>
+   <guid isPermaLink="false">https://www.lemonde.fr/politique/article/2026/08/24/presidentielle-2027-l-apres-saisit-la-main-tendue-de-l-ecologiste-marine-tondelier-pour-une-union-de-la-gauche_6755585_823448.html</guid>
+   <description>La secrétaire nationale des Ecologistes avait de nouveau appelé vendredi à des rencontres bilatérales avec les partis de gauche. Si le parti des ex-élus de La France insoumise a répondu favorablement, la formation mélenchoniste a rejeté la proposition.</description>
+   <pubDate>Mon, 24 Aug 2026 16:43:57 +0000</pubDate>
+  </item>
+  <item>
+   <title>Comment les pirates de « GTA VI » tentent de tirer profit des vidéos volées du jeu</title>
+   <link>https://www.lemonde.fr/pixels/article/2026/08/24/comment-les-pirates-de-gta-vi-tentent-de-tirer-profit-des-videos-volees-du-jeu_6755583_4408996.html</link>
+   <guid isPermaLink="false">https://www.lemonde.fr/pixels/article/2026/08/24/comment-les-pirates-de-gta-vi-tentent-de-tirer-profit-des-videos-volees-du-jeu_6755583_4408996.html</guid>
+   <description>Un groupe nommé Cyberleek continue de diffuser des extraits-chocs du jeu vidéo de Rockstar Games, dont la sortie est prévue pour le 19 novembre. L’éditeur Take-Two Interactive a entamé des actions en justice aux Etats-Unis face à cette « atteinte aux droits d’auteur ».</description>
+   <pubDate>Mon, 24 Aug 2026 16:30:02 +0000</pubDate>
+  </item>
   <item>
    <title>Orages : dix-neuf départements de la moitié sud du pays en vigilance orange lundi</title>
    <link>https://www.lemonde.fr/planete/article/2026/08/24/orages-dix-neuf-departements-de-la-moitie-sud-du-pays-en-vigilance-orange-lundi_6754437_3245.html</link>
@@ -12,11 +26,11 @@
    <pubDate>Mon, 24 Aug 2026 16:24:52 +0000</pubDate>
   </item>
   <item>
-   <title>On a testé… « Blood Dungeon » : du sang, des os et des pixels</title>
-   <link>https://www.lemonde.fr/pixels/article/2026/08/24/on-a-teste-blood-dungeon-du-sang-des-os-et-des-pixels_6755549_4408996.html</link>
-   <guid isPermaLink="false">https://www.lemonde.fr/pixels/article/2026/08/24/on-a-teste-blood-dungeon-du-sang-des-os-et-des-pixels_6755549_4408996.html</guid>
-   <description>L’Américain Mark Essen offre un hommage assumé au frénétique « Vampire Survivors », qu’il agrémente d’une direction artistique savoureuse et d’ajouts créatifs.</description>
-   <pubDate>Mon, 24 Aug 2026 16:00:09 +0000</pubDate>
+   <title>Samuel Eto’o, président de la fédération camerounaise, soutient Gianni Infantino, qui « a changé le football » à la tête de la FIFA</title>
+   <link>https://www.lemonde.fr/sport/article/2026/08/24/fifa-samuel-eto-o-president-de-la-federation-camerounaise-soutient-gianni-infantino-qui-a-change-le-football_6755550_3242.html</link>
+   <guid isPermaLink="false">https://www.lemonde.fr/sport/article/2026/08/24/fifa-samuel-eto-o-president-de-la-federation-camerounaise-soutient-gianni-infantino-qui-a-change-le-football_6755550_3242.html</guid>
+   <description>Le patron de la Fédération internationale de football est embourbé dans une crise depuis l’échec de son projet contesté et finalement abandonné d’ouvrir l’instance mondiale à des investisseurs privés.</description>
+   <pubDate>Mon, 24 Aug 2026 16:06:12 +0000</pubDate>
   </item>
   <item>
    <title>« Un handicap établi une fois n’a pas à être plaidé sans fin »</title>
@@ -59,20 +73,6 @@
    <guid isPermaLink="false">https://www.lemonde.fr/economie/article/2026/08/24/donald-trump-menace-le-canada-en-affirmant-que-les-voitures-qui-y-sont-produites-seront-taxees-a-50-des-le-1-janvier-2027_6755508_3234.html</guid>
    <description>En pleines tensions commerciales avec son voisin d’Amérique du Nord, le président américain a mis de l’huile sur le feu, en menaçant l’industrie automobile. Cette surtaxe s’ajouterait à celles entrées en vigueur à la fin de la semaine dernière, qui concernent environ 28 milliards de dollars canadiens de marchandises.</description>
    <pubDate>Mon, 24 Aug 2026 14:51:03 +0000</pubDate>
-  </item>
-  <item>
-   <title>Le mégafeu en Gironde, énième révélateur de la vulnérabilité des réseaux télécoms</title>
-   <link>https://www.lemonde.fr/economie/article/2026/08/24/le-megafeu-en-gironde-enieme-revelateur-de-la-vulnerabilite-des-reseaux-telecoms_6755475_3234.html</link>
-   <guid isPermaLink="false">https://www.lemonde.fr/economie/article/2026/08/24/le-megafeu-en-gironde-enieme-revelateur-de-la-vulnerabilite-des-reseaux-telecoms_6755475_3234.html</guid>
-   <description>L’incendie parti de Saumos n’a pas épargné les infrastructures Internet fixe et de téléphonie mobile. Ce sinistre hors norme pose une nouvelle fois la question de l’adaptation des réseaux aux catastrophes et événements climatiques extrêmes.</description>
-   <pubDate>Mon, 24 Aug 2026 14:30:11 +0000</pubDate>
-  </item>
-  <item>
-   <title>Budget 2027 : le gouvernement prêt à reconduire une deuxième fois la taxe « exceptionnelle » sur les grandes entreprises</title>
-   <link>https://www.lemonde.fr/politique/article/2026/08/24/budget-2027-le-gouvernement-pret-a-reconduire-une-deuxieme-fois-la-taxe-exceptionnelle-sur-les-grandes-entreprises_6755474_823448.html</link>
-   <guid isPermaLink="false">https://www.lemonde.fr/politique/article/2026/08/24/budget-2027-le-gouvernement-pret-a-reconduire-une-deuxieme-fois-la-taxe-exceptionnelle-sur-les-grandes-entreprises_6755474_823448.html</guid>
-   <description>Prévue pour ne durer qu’un an en 2025, reconduite en 2026, cette contribution devrait figurer au prochain budget. Roland Lescure, ministre de l’économie et des finances, a même reconnu, lundi 24 août, sur RMC et BFM-TV, que sa diminution était loin d’être acquise.</description>
-   <pubDate>Mon, 24 Aug 2026 14:30:08 +0000</pubDate>
   </item>
  </channel>
 </rss>
