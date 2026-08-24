@@ -11,22 +11,18 @@ FEEDS = {
     "actualites": {
         "url": "https://www.lemonde.fr/rss/une.xml",
         "title": "Actualités",
-        "sort_by_date": True,
     },
     "finance": {
-        "url": "https://fr.investing.com/rss/286.rss",
+        "url": "https://fr.investing.com/rss/news.rss",
         "title": "Finance",
-        "sort_by_date": False,
     },
     "sport": {
         "url": "https://www.lemonde.fr/sport/rss_full.xml",
         "title": "Sport",
-        "sort_by_date": True,
     },
     "crypto": {
-        "url": "https://fr.investing.com/rss/302.rss",
+        "url": "https://fr.investing.com/rss/news_301.rss",
         "title": "Crypto",
-        "sort_by_date": False,
     },
 }
 
@@ -41,8 +37,8 @@ HEADERS = {
         "Chrome/149.0.0.0 Safari/537.36"
     ),
     "Accept": (
-        "text/html,application/xhtml+xml,application/xml;"
-        "q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
+        "application/rss+xml, application/xml, text/xml, "
+        "application/xhtml+xml, */*"
     ),
     "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
     "Cache-Control": "no-cache",
@@ -102,6 +98,12 @@ def fetch_feed(url):
 
     feed = feedparser.parse(response.content)
 
+    if feed.bozo:
+        print(
+            f"   ⚠️ RSS parser warning : "
+            f"{feed.bozo_exception}"
+        )
+
     if not feed.entries:
         raise RuntimeError(
             "Le flux RSS ne contient aucun article."
@@ -110,42 +112,35 @@ def fetch_feed(url):
     return feed
 
 
-def prepare_entries(feed, config):
-    entries = list(feed.entries)
+def prepare_entries(feed):
+    dated_entries = []
+    undated_entries = []
 
-    if config["sort_by_date"]:
-        dated_entries = []
-        undated_entries = []
+    for index, entry in enumerate(feed.entries):
+        date = get_entry_date(entry)
 
-        for entry in entries:
-            date = get_entry_date(entry)
+        if date is None:
+            undated_entries.append(
+                (index, entry)
+            )
+        else:
+            dated_entries.append(
+                (date, index, entry)
+            )
 
-            if date is None:
-                undated_entries.append(entry)
-            else:
-                dated_entries.append(
-                    (date, entry)
-                )
+    dated_entries.sort(
+        key=lambda item: item[0],
+        reverse=True
+    )
 
-        dated_entries.sort(
-            key=lambda item: item[0],
-            reverse=True
-        )
+    entries = (
+        [entry for _, _, entry in dated_entries]
+        + [entry for _, entry in undated_entries]
+    )
 
-        entries = (
-            [entry for _, entry in dated_entries]
-            + undated_entries
-        )
-
-        print(
-            "   📅 Tri chronologique effectué."
-        )
-
-    else:
-        print(
-            "   📋 Ordre source conservé "
-            "(date RSS non fiable)."
-        )
+    print(
+        "   📅 Tri chronologique effectué."
+    )
 
     return entries
 
@@ -174,7 +169,9 @@ def create_feed(category, config, entries):
     ET.SubElement(
         channel,
         "description"
-    ).text = f"Flux RSS {config['title']} - Tensho"
+    ).text = (
+        f"Flux RSS {config['title']} - Tensho"
+    )
 
     for entry in entries[:MAX_ITEMS]:
         item = ET.SubElement(
@@ -233,8 +230,6 @@ def create_feed(category, config, entries):
             "description"
         ).text = description
 
-        # On conserve la date fournie par la source.
-        # On n'invente jamais une date avec datetime.now().
         if pub_date is not None:
             ET.SubElement(
                 item,
@@ -243,7 +238,9 @@ def create_feed(category, config, entries):
                 pub_date
             )
 
-    tree = ET.ElementTree(rss)
+    tree = ET.ElementTree(
+        rss
+    )
 
     ET.indent(
         tree,
@@ -296,8 +293,7 @@ def main():
             )
 
             entries = prepare_entries(
-                feed,
-                config
+                feed
             )
 
             print(
