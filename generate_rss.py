@@ -9,7 +9,7 @@ import requests
 
 FEEDS = {
     "actualites": {
-        "url": "https://www.lemonde.fr/international/rss_full.xml",
+        "url": "https://www.franceinfo.fr/france.rss",
         "title": "Actualités",
         "discord": True,
     },
