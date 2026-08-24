@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 from email.utils import format_datetime
 from datetime import datetime, timezone
 from pathlib import Path
+import requests
 
 
 FEEDS = {
@@ -26,6 +27,18 @@ FEEDS = {
 }
 
 MAX_ITEMS = 10
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/139.0.0.0 Safari/537.36"
+    ),
+    "Accept": (
+        "application/rss+xml, application/xml, "
+        "text/xml, */*"
+    ),
+}
 
 
 def get_entry_date(entry):
@@ -56,46 +69,132 @@ def get_description(entry):
     return clean_text(description)
 
 
-def create_feed(category, config, entries):
-    rss = ET.Element("rss", {"version": "2.0"})
+def fetch_feed(url):
+    print(f"   🌐 Connexion au flux...")
 
-    channel = ET.SubElement(rss, "channel")
-
-    ET.SubElement(channel, "title").text = f"Actualités - {config['title']}"
-    ET.SubElement(channel, "link").text = config["url"]
-    ET.SubElement(channel, "description").text = (
-        f"Flux RSS {config['title']} - Tensho"
+    response = requests.get(
+        url,
+        headers=HEADERS,
+        timeout=30,
     )
 
+    response.raise_for_status()
+
+    print(
+        f"   🟢 HTTP {response.status_code} "
+        f"({len(response.content)} octets)"
+    )
+
+    feed = feedparser.parse(response.content)
+
+    if not feed.entries:
+        raise RuntimeError(
+            "Le flux ne contient aucun article."
+        )
+
+    return feed
+
+
+def create_feed(category, config, entries):
+    rss = ET.Element(
+        "rss",
+        {"version": "2.0"}
+    )
+
+    channel = ET.SubElement(
+        rss,
+        "channel"
+    )
+
+    ET.SubElement(
+        channel,
+        "title"
+    ).text = f"Actualités - {config['title']}"
+
+    ET.SubElement(
+        channel,
+        "link"
+    ).text = config["url"]
+
+    ET.SubElement(
+        channel,
+        "description"
+    ).text = f"Flux RSS {config['title']} - Tensho"
+
     for entry in entries[:MAX_ITEMS]:
-        item = ET.SubElement(channel, "item")
+        item = ET.SubElement(
+            channel,
+            "item"
+        )
 
-        title = clean_text(entry.get("title", "Sans titre"))
-        link = entry.get("link", "").strip()
+        title = clean_text(
+            entry.get(
+                "title",
+                "Sans titre"
+            )
+        )
 
-        guid = entry.get("id") or entry.get("guid") or link
+        link = entry.get(
+            "link",
+            ""
+        ).strip()
 
-        description = get_description(entry)
-        pub_date = get_entry_date(entry)
+        guid = (
+            entry.get("id")
+            or entry.get("guid")
+            or link
+        )
 
-        ET.SubElement(item, "title").text = title
-        ET.SubElement(item, "link").text = link
+        description = get_description(
+            entry
+        )
+
+        pub_date = get_entry_date(
+            entry
+        )
+
+        ET.SubElement(
+            item,
+            "title"
+        ).text = title
+
+        ET.SubElement(
+            item,
+            "link"
+        ).text = link
 
         guid_element = ET.SubElement(
             item,
             "guid",
             {"isPermaLink": "true"}
         )
+
         guid_element.text = guid
 
-        ET.SubElement(item, "description").text = description
-        ET.SubElement(item, "pubDate").text = format_datetime(pub_date)
+        ET.SubElement(
+            item,
+            "description"
+        ).text = description
 
-    tree = ET.ElementTree(rss)
+        ET.SubElement(
+            item,
+            "pubDate"
+        ).text = format_datetime(
+            pub_date
+        )
 
-    output = Path(f"{category}.xml")
+    tree = ET.ElementTree(
+        rss
+    )
 
-    ET.indent(tree, space=" ")
+    ET.indent(
+        tree,
+        space=" "
+    )
+
+    output = Path(
+        f"{category}.xml"
+    )
 
     tree.write(
         output,
@@ -103,7 +202,9 @@ def create_feed(category, config, entries):
         xml_declaration=True
     )
 
-    print(f"OK : {output}")
+    print(
+        f"   🟢 {output} généré."
+    )
 
 
 def main():
@@ -111,35 +212,62 @@ def main():
     print("Tensho Actualités RSS")
     print("========================================")
 
+    successful = 0
+    failed = 0
+
     for category, config in FEEDS.items():
+
         print()
-        print(f"🔎 Récupération : {config['title']}")
-        print(f"   {config['url']}")
+        print(
+            f"🔎 Récupération : "
+            f"{config['title']}"
+        )
+
+        print(
+            f"   {config['url']}"
+        )
 
         try:
-            feed = feedparser.parse(config["url"])
+            feed = fetch_feed(
+                config["url"]
+            )
 
-            if feed.bozo and not feed.entries:
-                print("❌ Flux inaccessible ou invalide.")
-                continue
-
-            entries = list(feed.entries)
+            entries = list(
+                feed.entries
+            )
 
             entries.sort(
                 key=get_entry_date,
                 reverse=True
             )
 
-            print(f"🟢 {len(entries)} articles récupérés.")
+            print(
+                f"   📰 {len(entries)} "
+                f"articles récupérés."
+            )
 
-            create_feed(category, config, entries)
+            create_feed(
+                category,
+                config,
+                entries
+            )
+
+            successful += 1
 
         except Exception as error:
-            print(f"❌ Erreur : {error}")
+
+            print(
+                f"   ❌ Échec : {error}"
+            )
+
+            failed += 1
 
     print()
     print("========================================")
-    print("RSS TERMINÉ")
+    print(
+        f"RSS TERMINÉ — "
+        f"{successful} OK / {failed} échec(s)"
+    )
     print("========================================")
 
 
