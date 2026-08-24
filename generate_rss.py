@@ -9,20 +9,24 @@ import requests
 
 FEEDS = {
     "actualites": {
-        "url": "https://www.lemonde.fr/rss/une.xml",
+        "url": "https://www.lemonde.fr/international/rss_full.xml",
         "title": "Actualités",
+        "discord": True,
+    },
+    "football": {
+        "url": "https://www.lemonde.fr/football/rss_full.xml",
+        "title": "Football",
+        "discord": True,
     },
     "finance": {
         "url": "https://fr.investing.com/rss/news.rss",
         "title": "Finance",
-    },
-    "sport": {
-        "url": "https://www.lemonde.fr/sport/rss_full.xml",
-        "title": "Sport",
+        "discord": False,
     },
     "crypto": {
         "url": "https://fr.investing.com/rss/news_301.rss",
         "title": "Crypto",
+        "discord": False,
     },
 }
 
@@ -213,7 +217,7 @@ def create_feed(
     category,
     config,
     entries,
-    filename=None,
+    filename,
     max_items=MAX_ITEMS
 ):
     rss = ET.Element(
@@ -260,9 +264,7 @@ def create_feed(
         space=" "
     )
 
-    output = Path(
-        filename or f"{category}.xml"
-    )
+    output = Path(filename)
 
     tree.write(
         output,
@@ -324,13 +326,13 @@ def main():
                 max_items=MAX_ITEMS
             )
 
-            # Flux spécial Readybot uniquement pour les actualités
-            if category == "actualites":
+            # Flux Readybot : uniquement le dernier article
+            if config["discord"]:
                 create_feed(
                     category,
                     config,
                     entries,
-                    filename="actualites-discord.xml",
+                    filename=f"{category}-discord.xml",
                     max_items=1
                 )
 
