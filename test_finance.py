@@ -3,7 +3,7 @@ import feedparser
 
 URLS = {
     "Crypto News": "https://fr.investing.com/rss/news_301.rss",
-    "Finance actuel": "https://fr.investing.com/rss/286.rss",
+    "Finance News": "https://fr.investing.com/rss/news.rss",
 }
 
 HEADERS = {
