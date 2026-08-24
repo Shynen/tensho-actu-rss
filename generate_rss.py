@@ -77,31 +77,52 @@ def get_description(entry):
 def fetch_feed(url):
     print("   🌐 Requête HTTP...")
 
+    try:
+        response = requests.get(
+            url,
+            headers=HEADERS,
+            timeout=30,
+            allow_redirects=True,
+        )
+
+        print(f"   📡 HTTP {response.status_code}")
+
+        if response.status_code == 200:
+            feed = feedparser.parse(response.content)
+
+            if feed.entries:
+                return feed
+
+        print("   ⚠️ Accès direct refusé ou flux invalide.")
+        print("   🔄 Tentative via Jina Reader...")
+
+    except Exception as error:
+        print(f"   ⚠️ Accès direct échoué : {error}")
+        print("   🔄 Tentative via Jina Reader...")
+
+    jina_url = f"https://r.jina.ai/{url}"
+
+    jina_headers = {
+        "Accept": "text/html",
+        "User-Agent": "Mozilla/5.0",
+        "X-Respond-With": "html",
+    }
+
     response = requests.get(
-        url,
-        headers=HEADERS,
-        timeout=30,
-        allow_redirects=True,
+        jina_url,
+        headers=jina_headers,
+        timeout=60,
     )
 
-    print(f"   📡 HTTP {response.status_code}")
-    print(f"   📍 URL finale : {response.url}")
-    print(f"   📦 Taille : {len(response.content)} octets")
+    print(f"   📡 Jina HTTP {response.status_code}")
 
-    if response.status_code != 200:
-        print("   📋 En-têtes reçus :")
-        for key, value in response.headers.items():
-            print(f"      {key}: {value}")
-
-        raise RuntimeError(
-            f"HTTP {response.status_code}"
-        )
+    response.raise_for_status()
 
     feed = feedparser.parse(response.content)
 
     if not feed.entries:
         raise RuntimeError(
-            "Le flux ne contient aucun article."
+            "Jina a récupéré la source mais aucun article RSS n'a été détecté."
         )
 
     return feed
