@@ -138,17 +138,89 @@ def prepare_entries(feed):
         + [entry for _, entry in undated_entries]
     )
 
-    print(
-        "   📅 Tri chronologique effectué."
-    )
+    print("   📅 Tri chronologique effectué.")
 
     return entries
 
 
-def create_feed(category, config, entries):
+def add_item(channel, entry):
+    item = ET.SubElement(
+        channel,
+        "item"
+    )
+
+    title = clean_text(
+        entry.get(
+            "title",
+            "Sans titre"
+        )
+    )
+
+    link = entry.get(
+        "link",
+        ""
+    ).strip()
+
+    guid = (
+        entry.get("id")
+        or entry.get("guid")
+        or link
+    )
+
+    description = get_description(
+        entry
+    )
+
+    pub_date = get_entry_date(
+        entry
+    )
+
+    ET.SubElement(
+        item,
+        "title"
+    ).text = title
+
+    ET.SubElement(
+        item,
+        "link"
+    ).text = link
+
+    guid_element = ET.SubElement(
+        item,
+        "guid",
+        {
+            "isPermaLink": "false"
+        }
+    )
+
+    guid_element.text = guid
+
+    ET.SubElement(
+        item,
+        "description"
+    ).text = description
+
+    if pub_date is not None:
+        ET.SubElement(
+            item,
+            "pubDate"
+        ).text = format_datetime(
+            pub_date
+        )
+
+
+def create_feed(
+    category,
+    config,
+    entries,
+    filename=None,
+    max_items=MAX_ITEMS
+):
     rss = ET.Element(
         "rss",
-        {"version": "2.0"}
+        {
+            "version": "2.0"
+        }
     )
 
     channel = ET.SubElement(
@@ -173,70 +245,11 @@ def create_feed(category, config, entries):
         f"Flux RSS {config['title']} - Tensho"
     )
 
-    for entry in entries[:MAX_ITEMS]:
-        item = ET.SubElement(
+    for entry in entries[:max_items]:
+        add_item(
             channel,
-            "item"
-        )
-
-        title = clean_text(
-            entry.get(
-                "title",
-                "Sans titre"
-            )
-        )
-
-        link = entry.get(
-            "link",
-            ""
-        ).strip()
-
-        guid = (
-            entry.get("id")
-            or entry.get("guid")
-            or link
-        )
-
-        description = get_description(
             entry
         )
-
-        pub_date = get_entry_date(
-            entry
-        )
-
-        ET.SubElement(
-            item,
-            "title"
-        ).text = title
-
-        ET.SubElement(
-            item,
-            "link"
-        ).text = link
-
-        guid_element = ET.SubElement(
-            item,
-            "guid",
-            {
-                "isPermaLink": "false"
-            }
-        )
-
-        guid_element.text = guid
-
-        ET.SubElement(
-            item,
-            "description"
-        ).text = description
-
-        if pub_date is not None:
-            ET.SubElement(
-                item,
-                "pubDate"
-            ).text = format_datetime(
-                pub_date
-            )
 
     tree = ET.ElementTree(
         rss
@@ -248,7 +261,7 @@ def create_feed(category, config, entries):
     )
 
     output = Path(
-        f"{category}.xml"
+        filename or f"{category}.xml"
     )
 
     tree.write(
@@ -258,7 +271,8 @@ def create_feed(category, config, entries):
     )
 
     print(
-        f"   🟢 {output} généré."
+        f"   🟢 {output} généré "
+        f"({min(len(entries), max_items)} article(s))."
     )
 
 
@@ -301,11 +315,24 @@ def main():
                 f"articles récupérés."
             )
 
+            # Flux complet
             create_feed(
                 category,
                 config,
-                entries
+                entries,
+                filename=f"{category}.xml",
+                max_items=MAX_ITEMS
             )
+
+            # Flux spécial Readybot uniquement pour les actualités
+            if category == "actualites":
+                create_feed(
+                    category,
+                    config,
+                    entries,
+                    filename="actualites-discord.xml",
+                    max_items=1
+                )
 
             successful += 1
 
