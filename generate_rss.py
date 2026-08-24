@@ -23,6 +23,11 @@ FEEDS = {
         "title": "Finance",
         "discord": False,
     },
+    "actions": {
+    "url": "https://fr.investing.com/rss/news_25.rss",
+    "title": "Actions",
+    "discord": True,
+    },
     "crypto": {
         "url": "https://fr.investing.com/rss/news_301.rss",
         "title": "Crypto",
