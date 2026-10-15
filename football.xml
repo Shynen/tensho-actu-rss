@@ -5,10 +5,17 @@
   <link>https://www.lemonde.fr/football/rss_full.xml</link>
   <description>Flux RSS Football - Tensho</description>
   <item>
-   <title>EN DIRECT, Manchester City-PSG : les Parisiens se sont fait peur en deuxième période face aux Cityzens mais s’imposent en Ligue des champions</title>
+   <title>Manchester City-PSG : le résumé de la victoire spectaculaire du Paris Saint-Germain, résistant face aux Cityzens en Ligue des champions</title>
+   <link>https://www.lemonde.fr/sport/article/2026/10/14/manchester-city-psg-le-resume-de-la-victoire-spectaculaire-du-paris-saint-germain-resistant-face-aux-cityzens-en-ligue-des-champions_6793830_3242.html</link>
+   <guid isPermaLink="false">https://www.lemonde.fr/sport/article/2026/10/14/manchester-city-psg-le-resume-de-la-victoire-spectaculaire-du-paris-saint-germain-resistant-face-aux-cityzens-en-ligue-des-champions_6793830_3242.html</guid>
+   <description>Grâce à une excellente première période, le PSG, double tenant du titre européen, s’est imposé avec brio sur la pelouse de Manchester City (4-2) mercredi, pour la deuxième journée de Ligue des champions.</description>
+   <pubDate>Wed, 14 Oct 2026 21:33:02 +0000</pubDate>
+  </item>
+  <item>
+   <title>Manchester City-PSG : revivez le succès haletant des Parisiens, déstabilisés mais pas repris par les Cityzens en Ligue des champions</title>
    <link>https://www.lemonde.fr/sport/live/2026/10/14/en-direct-manchester-city-psg-suivez-le-match-de-ligue-des-champions_6793781_3242.html</link>
    <guid isPermaLink="false">https://www.lemonde.fr/sport/live/2026/10/14/en-direct-manchester-city-psg-suivez-le-match-de-ligue-des-champions_6793781_3242.html</guid>
-   <description>Après une entrée en matière réussie face au Slovan Bratislava (6-1), le Paris Saint-Germain, double tenant du titre continental, se déplace sur la pelouse de Manchester City, mercredi, pour un premier choc européen en phase de ligue.</description>
+   <description>Après une entrée en matière réussie face au Slova Bratislava (6-1), le Paris Saint-Germain, double tenant du titre continental, s’est imposé contre Manchester City (4-2) mercredi en Angleterre, au terme d’une rencontre spectaculaire.</description>
    <pubDate>Wed, 14 Oct 2026 17:00:04 +0000</pubDate>
   </item>
   <item>
@@ -66,13 +73,6 @@
    <guid isPermaLink="false">https://www.lemonde.fr/sport/article/2026/10/13/un-bureau-de-la-fifa-dans-la-trump-tower-pour-4-millions-de-dollars-de-loyer-symbole-des-liens-forts-entre-infantino-et-trump_6793057_3242.html</guid>
    <description>Selon des documents dont « Le Monde » a pris connaissance, la Fédération internationale de football a consenti, en 2025, à verser à la société Trump Tower Commercial LLC un loyer total de près de 4 millions de dollars sur plus de sept ans, pour le bureau « de représentation », souvent vide, de l’instance présidée par Gianni Infantino.</description>
    <pubDate>Tue, 13 Oct 2026 04:00:04 +0000</pubDate>
-  </item>
-  <item>
-   <title>L’OM sort de la zone de relégation de Ligue 1, Rennes monte sur le podium</title>
-   <link>https://www.lemonde.fr/sport/article/2026/10/12/l-om-sort-de-la-zone-de-relegation-de-ligue-1-rennes-monte-sur-le-podium_6792275_3242.html</link>
-   <guid isPermaLink="false">https://www.lemonde.fr/sport/article/2026/10/12/l-om-sort-de-la-zone-de-relegation-de-ligue-1-rennes-monte-sur-le-podium_6792275_3242.html</guid>
-   <description>Après quatre défaites d’affilée en championnat, les Marsellais se sont imposés, dimanche soir, à Troyes (2-0) lors de la 6ᵉ journée. Vainqueur d’Auxerre (4-1), le Stade Rennais se retrouve troisième, derrière Monaco et Lille.</description>
-   <pubDate>Mon, 12 Oct 2026 01:26:08 +0000</pubDate>
   </item>
  </channel>
 </rss>
