@@ -5,11 +5,18 @@
   <link>https://www.lemonde.fr/football/rss_full.xml</link>
   <description>Flux RSS Football - Tensho</description>
   <item>
-   <title>EN DIRECT, Villarreal-PSG et Bodo Glimt-Lille : suivez les matchs de Ligue des champions</title>
+   <title>Ligue des champions : le résumé du festival offensif du PSG face à Villarreal et du match nul frustrant de Lille face à Bodo Glimt</title>
+   <link>https://www.lemonde.fr/sport/article/2026/11/03/ligue-des-champions-le-resume-du-festival-offensif-du-psg-face-a-villarreal-et-du-match-nul-frustrant-de-lille-face-a-bodo-glimt_6805702_3242.html</link>
+   <guid isPermaLink="false">https://www.lemonde.fr/sport/article/2026/11/03/ligue-des-champions-le-resume-du-festival-offensif-du-psg-face-a-villarreal-et-du-match-nul-frustrant-de-lille-face-a-bodo-glimt_6805702_3242.html</guid>
+   <description>Les Parisiens, qui ont déroulé, mardi, face à Villarreal (6-0), poursuivent leur sans-faute en Ligue des champions. Les Lillois, eux, ont été tenus en échec (0-0) lors de leur déplacement en Norvège.</description>
+   <pubDate>Tue, 03 Nov 2026 22:26:34 +0000</pubDate>
+  </item>
+  <item>
+   <title>Villarreal-PSG et Bodo Glimt-Lille : revivez la large victoire des Parisiens et le match nul décevant des Lillois</title>
    <link>https://www.lemonde.fr/sport/live/2026/11/03/en-direct-villarreal-psg-et-bodo-glimt-lille-suivez-les-matchs-de-ligue-des-champions_6805646_3242.html</link>
    <guid isPermaLink="false">https://www.lemonde.fr/sport/live/2026/11/03/en-direct-villarreal-psg-et-bodo-glimt-lille-suivez-les-matchs-de-ligue-des-champions_6805646_3242.html</guid>
    <description>Le Paris Saint-Germain va tenter de poursuivre son sans-faute en Ligue des champions, mardi, sur la pelouse de Villarreal. De leur côté, les Lillois visent les premiers points de leur campagne européenne lors de leur déplacement en Norvège.</description>
-   <pubDate>Tue, 03 Nov 2026 18:00:19 +0000</pubDate>
+   <pubDate>Tue, 03 Nov 2026 18:00:12 +0000</pubDate>
   </item>
   <item>
    <title>Jesus de Miguel, footballeur espagnol, meurt des suites d’un choc sur le terrain avec le gardien de l’équipe adverse</title>
@@ -66,13 +73,6 @@
    <guid isPermaLink="false">https://www.lemonde.fr/sport/article/2026/11/02/l-ol-retrouve-le-podium-de-la-ligue-1-l-om-pointe-son-nez-en-haut-du-classement_6804840_3242.html</guid>
    <description>Les Marseillais, désormais sixièmes, ont signé un quatrième succès de rang en championnat en s’imposant face à Toulouse (2-0). Les Lyonnais, qui ont battu Angers (2-0), partagent leur troisième place avec le Paris FC, vainqueur de Monaco (3-1).</description>
    <pubDate>Mon, 02 Nov 2026 04:14:01 +0000</pubDate>
-  </item>
-  <item>
-   <title>Après les propos de Kylian Mbappé sur Mao, la télévision chinoise fait l’impasse sur la Liga</title>
-   <link>https://www.lemonde.fr/sport/article/2026/11/01/apres-les-propos-de-kylian-mbappe-sur-mao-la-television-chinoise-fait-l-impasse-sur-la-liga_6804523_3242.html</link>
-   <guid isPermaLink="false">https://www.lemonde.fr/sport/article/2026/11/01/apres-les-propos-de-kylian-mbappe-sur-mao-la-television-chinoise-fait-l-impasse-sur-la-liga_6804523_3242.html</guid>
-   <description>La télévision publique n’a pas retransmis en direct, dimanche, la rencontre entre le Real Madrid et Santander. Les autres affiches de la 11ᵉ journée du championnat ont connu le même sort.</description>
-   <pubDate>Sun, 01 Nov 2026 16:15:23 +0000</pubDate>
   </item>
  </channel>
 </rss>
